@@ -16,6 +16,12 @@ import { formatMoney, timeAgo } from '@/lib/utils'
 
 type OrderRow = Tables<'orders'> & { branches: { name_ar: string } | null }
 type Branch = Pick<Tables<'branches'>, 'id' | 'name_ar'>
+type DriverLite = {
+  id: string
+  branch_id: string | null
+  is_online: boolean
+  users: { name: string | null } | null
+}
 
 // Columns shown on the live board (delivered/cancelled excluded)
 const BOARD: Enums<'order_status'>[] = ORDER_STATUS_FLOW.filter(
@@ -46,6 +52,7 @@ export default function LiveOrders() {
   const { session } = useAuth()
   const [orders, setOrders] = React.useState<OrderRow[]>([])
   const [branches, setBranches] = React.useState<Branch[]>([])
+  const [drivers, setDrivers] = React.useState<DriverLite[]>([])
   const [branchFilter, setBranchFilter] = React.useState('')
   const [sound, setSound] = React.useState(true)
   const [busy, setBusy] = React.useState(false)
@@ -68,6 +75,11 @@ export default function LiveOrders() {
       .select('id, name_ar')
       .order('name_ar')
       .then(({ data }) => setBranches(data ?? []))
+    supabase
+      .from('drivers')
+      .select('id, branch_id, is_online, users(name)')
+      .eq('is_active', true)
+      .then(({ data }) => setDrivers((data as unknown as DriverLite[]) ?? []))
 
     // Realtime subscription
     const channel = supabase
@@ -99,6 +111,17 @@ export default function LiveOrders() {
   async function cancel(o: OrderRow) {
     setBusy(true)
     await supabase.from('orders').update({ status: 'cancelled' }).eq('id', o.id)
+    setBusy(false)
+    fetchOrders()
+  }
+
+  // Manually assign (or unassign) a driver to an order.
+  async function assignDriver(o: OrderRow, driverId: string) {
+    setBusy(true)
+    await supabase
+      .from('orders')
+      .update({ driver_id: driverId || null })
+      .eq('id', o.id)
     setBusy(false)
     fetchOrders()
   }
@@ -197,7 +220,25 @@ export default function LiveOrders() {
                           {PAYMENT_METHOD_LABEL[o.payment_method]}
                         </Badge>
                       </div>
-                      <div className="mt-3 flex gap-2">
+                      {/* Manual driver assignment */}
+                      <div className="mt-2">
+                        <Select
+                          className="h-8 text-xs"
+                          value={o.driver_id ?? ''}
+                          disabled={busy}
+                          onChange={(e) => assignDriver(o, e.target.value)}
+                        >
+                          <option value="">— بلا سائق —</option>
+                          {drivers
+                            .filter((d) => !d.branch_id || d.branch_id === o.branch_id)
+                            .map((d) => (
+                              <option key={d.id} value={d.id}>
+                                {(d.users?.name ?? 'سائق') + (d.is_online ? ' 🟢' : ' ⚪')}
+                              </option>
+                            ))}
+                        </Select>
+                      </div>
+                      <div className="mt-2 flex gap-2">
                         {ns && (
                           <Button
                             size="sm"
