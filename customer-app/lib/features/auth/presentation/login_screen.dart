@@ -16,7 +16,10 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _phone = TextEditingController();
   final _otp = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
   bool _codeSent = false;
+  bool _emailMode = false; // email/password login (for testing without SMS)
   bool _loading = false;
   String? _error;
 
@@ -64,6 +67,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
+  Future<void> _emailLogin() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      await ref.read(supabaseProvider).auth.signInWithPassword(
+            email: _email.text.trim(),
+            password: _password.text,
+          );
+      if (mounted) context.go('/');
+    } on AuthException catch (e) {
+      setState(() => _error = e.message);
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,13 +114,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
               ),
-              const Text(
+              Text(
                 'طازج… ويوصل لباب بيتك',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppColors.textMuted),
               ),
               const SizedBox(height: 32),
-              if (!_codeSent) ...[
+              if (_emailMode) ...[
+                TextField(
+                  controller: _email,
+                  keyboardType: TextInputType.emailAddress,
+                  textDirection: TextDirection.ltr,
+                  decoration: const InputDecoration(
+                    labelText: 'البريد الإلكتروني',
+                    hintText: 'cust1@test.com',
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: _password,
+                  obscureText: true,
+                  textDirection: TextDirection.ltr,
+                  decoration: const InputDecoration(labelText: 'كلمة المرور'),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _loading ? null : _emailLogin,
+                  child: Text(_loading ? 'جارِ الدخول…' : 'تسجيل الدخول'),
+                ),
+              ] else if (!_codeSent) ...[
                 TextField(
                   controller: _phone,
                   keyboardType: TextInputType.phone,
@@ -145,6 +188,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               const Spacer(),
+              TextButton(
+                onPressed: () => setState(() {
+                  _emailMode = !_emailMode;
+                  _codeSent = false;
+                  _error = null;
+                }),
+                child: Text(_emailMode ? 'الدخول برقم الهاتف' : 'دخول تجريبي بالبريد الإلكتروني'),
+              ),
               TextButton(
                 onPressed: () => context.go('/'),
                 child: const Text('تصفّح كضيف'),

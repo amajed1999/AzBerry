@@ -6,6 +6,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../data/models/order.dart';
 import '../../../providers/providers.dart';
+import '../../../providers/settings_provider.dart';
 import '../../reviews/presentation/review_dialog.dart';
 
 final myOrdersProvider = FutureProvider<List<AppOrder>>((ref) async {
@@ -20,8 +21,22 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider);
+    final mode = ref.watch(themeModeProvider);
+    final isDark = mode == ThemeMode.dark ||
+        (mode == ThemeMode.system &&
+            MediaQuery.platformBrightnessOf(context) == Brightness.dark);
     return Scaffold(
-      appBar: AppBar(title: const Text('حسابي')),
+      appBar: AppBar(
+        title: const Text('حسابي'),
+        actions: [
+          IconButton(
+            tooltip: isDark ? 'الوضع النهاري' : 'الوضع الليلي',
+            icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+            onPressed: () =>
+                ref.read(themeModeProvider.notifier).toggleDark(!isDark),
+          ),
+        ],
+      ),
       body: user == null ? _GuestView(onLogin: () => context.push('/login')) : const _AccountView(),
     );
   }
@@ -43,7 +58,7 @@ class _GuestView extends StatelessWidget {
             const Text('أنت تتصفّح كضيف',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
             const SizedBox(height: 6),
-            const Text('سجّل الدخول لحفظ طلباتك ونقاط الولاء',
+            Text('سجّل الدخول لحفظ طلباتك ونقاط الولاء',
                 textAlign: TextAlign.center, style: TextStyle(color: AppColors.textMuted)),
             const SizedBox(height: 20),
             ElevatedButton(onPressed: onLogin, child: const Text('تسجيل الدخول')),
@@ -97,8 +112,9 @@ class _AccountView extends ConsumerWidget {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.brandSurface,
+            color: AppColors.surface,
             borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.brand.withValues(alpha: 0.35)),
           ),
           child: Column(
             children: [
@@ -111,7 +127,11 @@ class _AccountView extends ConsumerWidget {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Text(name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+                    child: Text(name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 16,
+                            color: AppColors.textDark)),
                   ),
                   IconButton(
                     onPressed: () => _editName(context, ref, name),
@@ -146,8 +166,8 @@ class _AccountView extends ConsumerWidget {
           ),
           error: (e, _) => Text('خطأ: $e'),
           data: (orders) => orders.isEmpty
-              ? const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24),
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
                   child: Center(child: Text('لا توجد طلبات بعد', style: TextStyle(color: AppColors.textMuted))),
                 )
               : Column(
@@ -177,7 +197,7 @@ class _StatChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(color: AppColors.bg, borderRadius: BorderRadius.circular(12)),
       child: Row(
         children: [
           Icon(icon, color: AppColors.brand, size: 22),
@@ -185,7 +205,7 @@ class _StatChip extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: const TextStyle(fontSize: 11, color: AppColors.textMuted)),
+              Text(label, style: TextStyle(fontSize: 11, color: AppColors.textMuted)),
               Text(value, style: const TextStyle(fontWeight: FontWeight.w800)),
             ],
           ),

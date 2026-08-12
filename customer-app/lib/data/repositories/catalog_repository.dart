@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../models/banner.dart';
 import '../models/branch.dart';
 import '../models/category.dart';
 import '../models/product.dart';
@@ -6,6 +7,17 @@ import '../models/product.dart';
 class CatalogRepository {
   final SupabaseClient _db;
   CatalogRepository(this._db);
+
+  Future<List<AppBanner>> banners() async {
+    final rows = await _db
+        .from('banners')
+        .select()
+        .eq('is_active', true)
+        .order('sort_order');
+    return (rows as List)
+        .map((e) => AppBanner.fromMap(e as Map<String, dynamic>))
+        .toList();
+  }
 
   Future<List<Branch>> branches() async {
     final rows = await _db

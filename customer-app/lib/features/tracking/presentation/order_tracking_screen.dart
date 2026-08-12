@@ -74,7 +74,7 @@ class OrderTrackingScreen extends ConsumerWidget {
                           Text('طلب #${order.id.substring(0, 8)}',
                               style: const TextStyle(fontWeight: FontWeight.w800)),
                           Text('الإجمالي ${money(order.total)}  •  ${timeAgo(order.createdAt)}',
-                              style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                              style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
                         ],
                       ),
                     ),

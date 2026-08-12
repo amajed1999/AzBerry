@@ -141,12 +141,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('السلة')),
       body: items.isEmpty
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('🛒', style: TextStyle(fontSize: 60)),
-                  SizedBox(height: 8),
+                  const Text('🛒', style: TextStyle(fontSize: 60)),
+                  const SizedBox(height: 8),
                   Text('سلتك فارغة', style: TextStyle(color: AppColors.textMuted)),
                 ],
               ),
@@ -219,7 +219,7 @@ class _CartTile extends ConsumerWidget {
                     if (item.size != null) item.size!.labelAr,
                     if (item.addons.isNotEmpty) item.addons.map((a) => a.nameAr).join('، '),
                   ].join('  •  '),
-                  style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                  style: TextStyle(fontSize: 12, color: AppColors.textMuted),
                 ),
                 const SizedBox(height: 4),
                 Text(money(item.lineTotal),
@@ -283,11 +283,11 @@ class _AddressSelector extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.brand),
           ),
-          child: const Row(
+          child: Row(
             children: [
-              Icon(Icons.add_location_alt, color: AppColors.brand),
-              SizedBox(width: 8),
-              Expanded(child: Text('أضف عنوان توصيل', style: TextStyle(fontWeight: FontWeight.w600))),
+              const Icon(Icons.add_location_alt, color: AppColors.brand),
+              const SizedBox(width: 8),
+              const Expanded(child: Text('أضف عنوان توصيل', style: TextStyle(fontWeight: FontWeight.w600))),
               Icon(Icons.chevron_left, color: AppColors.textMuted),
             ],
           ),
@@ -322,7 +322,7 @@ class _AddressSelector extends StatelessWidget {
                     Text(selected.addressText!,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                        style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
                 ],
               ),
             ),
@@ -421,10 +421,10 @@ class _CheckoutPanel extends StatelessWidget {
     final belowMin = subtotal < minOrder;
     return Container(
       padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + MediaQuery.of(context).padding.bottom),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.surface,
         border: Border(top: BorderSide(color: AppColors.border)),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

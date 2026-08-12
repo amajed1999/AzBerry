@@ -5,6 +5,7 @@ import '../data/models/branch.dart';
 import '../data/models/category.dart';
 import '../data/models/product.dart';
 import '../data/models/address.dart';
+import '../data/models/banner.dart';
 import '../data/repositories/catalog_repository.dart';
 import '../data/repositories/orders_repository.dart';
 import '../data/repositories/account_repository.dart';
@@ -40,6 +41,11 @@ final selectedBranchProvider = StateProvider<Branch?>((ref) => null);
 /// Categories list.
 final categoriesProvider = FutureProvider<List<Category>>(
   (ref) => ref.watch(catalogRepoProvider).categories(),
+);
+
+/// Promotional banners for the home slider.
+final bannersProvider = FutureProvider<List<AppBanner>>(
+  (ref) => ref.watch(catalogRepoProvider).banners(),
 );
 
 /// Products for the selected branch.

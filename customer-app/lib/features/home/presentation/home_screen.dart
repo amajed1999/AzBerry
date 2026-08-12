@@ -7,6 +7,7 @@ import '../../../data/models/branch.dart';
 import '../../../data/models/product.dart';
 import '../../../providers/cart_provider.dart';
 import '../../../providers/providers.dart';
+import 'widgets/banner_carousel.dart';
 import 'widgets/branch_selector_sheet.dart';
 import 'widgets/product_card.dart';
 
@@ -74,7 +75,7 @@ class _BranchButton extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('التوصيل من', style: TextStyle(fontSize: 11, color: AppColors.textMuted)),
+              Text('التوصيل من', style: TextStyle(fontSize: 11, color: AppColors.textMuted)),
               Text(branch?.nameAr ?? 'اختر الفرع',
                   style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
             ],
@@ -138,6 +139,8 @@ class _MenuBody extends ConsumerWidget {
             ),
           ),
         ),
+        // Promotional banners
+        const SliverToBoxAdapter(child: BannerCarousel()),
         // Category chips
         SliverToBoxAdapter(
           child: categoriesAsync.when(
@@ -177,9 +180,9 @@ class _MenuBody extends ConsumerWidget {
           data: (products) {
             final filtered = _filter(products, selectedCat, query);
             if (filtered.isEmpty) {
-              return const SliverToBoxAdapter(
+              return SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 80),
+                  padding: const EdgeInsets.only(top: 80),
                   child: Center(child: Text('لا توجد منتجات', style: TextStyle(color: AppColors.textMuted))),
                 ),
               );
@@ -242,7 +245,7 @@ class _Chip extends StatelessWidget {
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: AppColors.border),
+          side: BorderSide(color: AppColors.border),
         ),
       ),
     );

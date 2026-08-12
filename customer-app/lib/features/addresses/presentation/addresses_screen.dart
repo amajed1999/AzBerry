@@ -23,12 +23,12 @@ class AddressesScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('خطأ: $e')),
         data: (list) => list.isEmpty
-            ? const Center(
+            ? Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('📍', style: TextStyle(fontSize: 60)),
-                    SizedBox(height: 8),
+                    const Text('📍', style: TextStyle(fontSize: 60)),
+                    const SizedBox(height: 8),
                     Text('لا توجد عناوين محفوظة', style: TextStyle(color: AppColors.textMuted)),
                   ],
                 ),
@@ -103,7 +103,7 @@ class _AddressTile extends StatelessWidget {
                   ],
                 ),
                 if (address.addressText != null)
-                  Text(address.addressText!, style: const TextStyle(fontSize: 13, color: AppColors.textMuted)),
+                  Text(address.addressText!, style: TextStyle(fontSize: 13, color: AppColors.textMuted)),
               ],
             ),
           ),
@@ -231,7 +231,7 @@ class _AddressEditorState extends ConsumerState<_AddressEditor> {
               ],
             ),
             const SizedBox(height: 4),
-            const Text(
+            Text(
               'ℹ️ اختيار الموقع من الخريطة يتطلب تفعيل Google Maps (مرحلة لاحقة).',
               style: TextStyle(fontSize: 11, color: AppColors.textMuted),
             ),

@@ -22,12 +22,12 @@ class FavoritesScreen extends ConsumerWidget {
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (e, _) => Center(child: Text('خطأ: $e')),
               data: (products) => products.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text('🤍', style: TextStyle(fontSize: 60)),
-                          SizedBox(height: 8),
+                          const Text('🤍', style: TextStyle(fontSize: 60)),
+                          const SizedBox(height: 8),
                           Text('لا توجد منتجات مفضّلة بعد',
                               style: TextStyle(color: AppColors.textMuted)),
                         ],
@@ -64,7 +64,7 @@ class _Guest extends StatelessWidget {
           children: [
             const Text('🤍', style: TextStyle(fontSize: 60)),
             const SizedBox(height: 12),
-            const Text('سجّل الدخول لعرض مفضّلتك',
+            Text('سجّل الدخول لعرض مفضّلتك',
                 textAlign: TextAlign.center, style: TextStyle(color: AppColors.textMuted)),
             const SizedBox(height: 16),
             ElevatedButton(

@@ -50,7 +50,7 @@ class ProductCard extends StatelessWidget {
                   ),
                   if (product.calories != null)
                     Text('${product.calories} سعرة',
-                        style: const TextStyle(fontSize: 11, color: AppColors.textMuted)),
+                        style: TextStyle(fontSize: 11, color: AppColors.textMuted)),
                   const SizedBox(height: 6),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

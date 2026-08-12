@@ -87,10 +87,10 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   Text(p.nameAr, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800)),
                   if (p.calories != null)
                     Text('${p.calories} سعرة حرارية',
-                        style: const TextStyle(color: AppColors.textMuted)),
+                        style: TextStyle(color: AppColors.textMuted)),
                   if (p.descriptionAr != null) ...[
                     const SizedBox(height: 8),
-                    Text(p.descriptionAr!, style: const TextStyle(color: AppColors.textMuted, height: 1.5)),
+                    Text(p.descriptionAr!, style: TextStyle(color: AppColors.textMuted, height: 1.5)),
                   ],
                   const SizedBox(height: 20),
 
@@ -246,7 +246,7 @@ class _BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 12, 16, 12 + MediaQuery.of(context).padding.bottom),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.surface,
         border: Border(top: BorderSide(color: AppColors.border)),
       ),
