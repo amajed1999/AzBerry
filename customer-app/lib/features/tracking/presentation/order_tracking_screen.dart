@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,7 +33,7 @@ class OrderTrackingScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('تتبّع الطلب'),
+        title: Text(tr('تتبّع الطلب')),
         leading: IconButton(
           icon: const Icon(Icons.home_outlined),
           onPressed: () => context.go('/'),
@@ -43,12 +44,12 @@ class OrderTrackingScreen extends ConsumerWidget {
         error: (e, _) => Center(child: Text('خطأ: $e')),
         data: (order) {
           if (order.status == OrderStatus.cancelled) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('❌', style: TextStyle(fontSize: 60)),
-                  Text('تم إلغاء الطلب', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                  const Text('❌', style: TextStyle(fontSize: 60)),
+                  Text(tr('تم إلغاء الطلب'), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
                 ],
               ),
             );
@@ -71,7 +72,7 @@ class OrderTrackingScreen extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('طلب #${order.id.substring(0, 8)}',
+                          Text('${tr('طلب')} #${order.id.substring(0, 8)}',
                               style: const TextStyle(fontWeight: FontWeight.w800)),
                           Text('الإجمالي ${money(order.total)}  •  ${timeAgo(order.createdAt)}',
                               style: TextStyle(fontSize: 12, color: AppColors.textMuted)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,7 +16,7 @@ class FavoritesScreen extends ConsumerWidget {
     final async = ref.watch(favoriteProductsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('المفضلة')),
+      appBar: AppBar(title: Text(tr('المفضلة'))),
       body: user == null
           ? const _Guest()
           : async.when(
@@ -28,7 +29,7 @@ class FavoritesScreen extends ConsumerWidget {
                         children: [
                           const Text('🤍', style: TextStyle(fontSize: 60)),
                           const SizedBox(height: 8),
-                          Text('لا توجد منتجات مفضّلة بعد',
+                          Text(tr('لا توجد منتجات مفضّلة بعد'),
                               style: TextStyle(color: AppColors.textMuted)),
                         ],
                       ),
@@ -64,12 +65,12 @@ class _Guest extends StatelessWidget {
           children: [
             const Text('🤍', style: TextStyle(fontSize: 60)),
             const SizedBox(height: 12),
-            Text('سجّل الدخول لعرض مفضّلتك',
+            Text(tr('سجّل الدخول لعرض مفضّلتك'),
                 textAlign: TextAlign.center, style: TextStyle(color: AppColors.textMuted)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => context.push('/login'),
-              child: const Text('تسجيل الدخول'),
+              child: Text(tr('تسجيل الدخول')),
             ),
           ],
         ),

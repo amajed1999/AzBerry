@@ -1,3 +1,5 @@
+import 'package:azberry_customer/core/i18n.dart';
+
 class ProductSize {
   final String id;
   final String sizeName;
@@ -16,6 +18,15 @@ class ProductSize {
         'large' => 'كبير',
         _ => sizeName,
       };
+
+  String get labelEn => switch (sizeName) {
+        'small' => 'Small',
+        'medium' => 'Medium',
+        'large' => 'Large',
+        _ => sizeName,
+      };
+
+  String get label => AppLocale.isEn ? labelEn : labelAr;
 }
 
 class ProductAddon {
@@ -36,6 +47,8 @@ class ProductAddon {
         nameEn: m['name_en'] as String,
         price: (m['price'] as num?) ?? 0,
       );
+
+  String get name => AppLocale.isEn ? nameEn : nameAr;
 }
 
 class Product {
@@ -49,6 +62,9 @@ class Product {
   final int? calories;
   final List<ProductSize> sizes;
   final List<ProductAddon> addons;
+
+  /// Display name in the active language.
+  String get name => AppLocale.isEn ? nameEn : nameAr;
 
   Product({
     required this.id,

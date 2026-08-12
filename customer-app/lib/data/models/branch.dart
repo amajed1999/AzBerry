@@ -1,3 +1,5 @@
+import 'package:azberry_customer/core/i18n.dart';
+
 class Branch {
   final String id;
   final String nameAr;
@@ -9,6 +11,8 @@ class Branch {
   final num minOrder;
   final bool isActive;
   final bool isBusy;
+
+  String get name => AppLocale.isEn ? nameEn : nameAr;
 
   Branch({
     required this.id,

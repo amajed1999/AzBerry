@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/config/app_config.dart';
+import 'core/i18n.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_colors.dart';
 import 'core/theme/app_theme.dart';
@@ -27,6 +28,7 @@ class AzBerryApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mode = ref.watch(themeModeProvider);
+    final lang = ref.watch(localeProvider);
 
     return MaterialApp.router(
       title: 'AzBerry',
@@ -35,7 +37,7 @@ class AzBerryApp extends ConsumerWidget {
       darkTheme: AppTheme.dark(),
       themeMode: mode,
       routerConfig: appRouter,
-      locale: const Locale('ar'),
+      locale: Locale(lang),
       supportedLocales: const [Locale('ar'), Locale('en')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -43,13 +45,15 @@ class AzBerryApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       builder: (context, child) {
-        // Drive the dynamic AppColors palette from the RESOLVED theme brightness.
-        // Runs after the theme is applied and before pages paint, so every
-        // widget reads the correct light/dark colors in the same frame.
+        // Set the global palette + language BEFORE pages paint (they read these
+        // via AppColors.mode / tr()), so everything updates in the same frame.
         AppColors.mode = Theme.of(context).brightness;
+        AppLocale.current = lang;
         return Directionality(
-          textDirection: TextDirection.rtl,
-          child: child!,
+          textDirection: lang == 'en' ? TextDirection.ltr : TextDirection.rtl,
+          // Re-inflate the page subtree when the language changes so that even
+          // const widgets (which don't rebuild on their own) re-evaluate tr().
+          child: KeyedSubtree(key: ValueKey(lang), child: child!),
         );
       },
     );

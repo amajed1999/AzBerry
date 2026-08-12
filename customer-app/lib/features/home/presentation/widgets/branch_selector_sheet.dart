@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -23,9 +24,9 @@ class BranchSelectorSheet extends ConsumerWidget {
         data: (branches) => Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text('اختر الفرع', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(tr('اختر الفرع'), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
             ),
             Flexible(
               child: ListView.separated(
@@ -37,9 +38,9 @@ class BranchSelectorSheet extends ConsumerWidget {
                   final isSel = b.id == selected?.id;
                   return ListTile(
                     leading: const Icon(Icons.store, color: AppColors.brand),
-                    title: Text(b.nameAr, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    title: Text(b.name, style: const TextStyle(fontWeight: FontWeight.w600)),
                     subtitle: Text(
-                      '${b.isBusy ? '🔴 مزدحم' : '🟢 مفتوح'}  •  توصيل ${money(b.deliveryFee)}',
+                      '${b.isBusy ? tr('🔴 مزدحم') : tr('🟢 مفتوح')}  •  توصيل ${money(b.deliveryFee)}',
                       style: const TextStyle(fontSize: 12),
                     ),
                     trailing: isSel ? const Icon(Icons.check_circle, color: AppColors.brand) : null,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
@@ -12,12 +13,12 @@ class AddressesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(addressesProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('عناويني')),
+      appBar: AppBar(title: Text(tr('عناويني'))),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _openEditor(context, ref, null),
         backgroundColor: AppColors.brand,
         icon: const Icon(Icons.add),
-        label: const Text('عنوان جديد'),
+        label: Text(tr('عنوان جديد')),
       ),
       body: async.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -29,7 +30,7 @@ class AddressesScreen extends ConsumerWidget {
                   children: [
                     const Text('📍', style: TextStyle(fontSize: 60)),
                     const SizedBox(height: 8),
-                    Text('لا توجد عناوين محفوظة', style: TextStyle(color: AppColors.textMuted)),
+                    Text(tr('لا توجد عناوين محفوظة'), style: TextStyle(color: AppColors.textMuted)),
                   ],
                 ),
               )
@@ -87,7 +88,7 @@ class _AddressTile extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(address.label ?? 'عنوان', style: const TextStyle(fontWeight: FontWeight.w700)),
+                    Text(address.label ?? tr('عنوان'), style: const TextStyle(fontWeight: FontWeight.w700)),
                     if (address.isDefault) ...[
                       const SizedBox(width: 8),
                       Container(
@@ -96,8 +97,8 @@ class _AddressTile extends StatelessWidget {
                           color: AppColors.brandSurface,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Text('افتراضي',
-                            style: TextStyle(fontSize: 11, color: AppColors.brandDark)),
+                        child: Text(tr('افتراضي'),
+                            style: const TextStyle(fontSize: 11, color: AppColors.brandDark)),
                       ),
                     ],
                   ],
@@ -160,7 +161,7 @@ class _AddressEditorState extends ConsumerState<_AddressEditor> {
     setState(() => _saving = true);
     await ref.read(accountRepoProvider).saveAddress(
           id: widget.existing?.id,
-          label: _label.text.trim().isEmpty ? 'عنوان' : _label.text.trim(),
+          label: _label.text.trim().isEmpty ? tr('عنوان') : _label.text.trim(),
           lat: double.tryParse(_lat.text) ?? 33.3152,
           lng: double.tryParse(_lng.text) ?? 44.3661,
           addressText: _text.text.trim(),
@@ -180,17 +181,17 @@ class _AddressEditorState extends ConsumerState<_AddressEditor> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(widget.existing == null ? 'عنوان جديد' : 'تعديل العنوان',
+            Text(widget.existing == null ? tr('عنوان جديد') : tr('تعديل العنوان'),
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
             const SizedBox(height: 16),
             TextField(
               controller: _label,
-              decoration: const InputDecoration(labelText: 'الاسم (البيت، العمل…)'),
+              decoration: InputDecoration(labelText: tr('الاسم (البيت، العمل…)')),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: _text,
-              decoration: const InputDecoration(labelText: 'العنوان التفصيلي'),
+              decoration: InputDecoration(labelText: tr('العنوان التفصيلي')),
             ),
             const SizedBox(height: 12),
             Row(
@@ -198,14 +199,14 @@ class _AddressEditorState extends ConsumerState<_AddressEditor> {
                 Expanded(
                   child: TextField(
                     controller: _building,
-                    decoration: const InputDecoration(labelText: 'المبنى/الشقة'),
+                    decoration: InputDecoration(labelText: tr('المبنى/الشقة')),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: TextField(
                     controller: _notes,
-                    decoration: const InputDecoration(labelText: 'ملاحظات'),
+                    decoration: InputDecoration(labelText: tr('ملاحظات')),
                   ),
                 ),
               ],
@@ -217,7 +218,7 @@ class _AddressEditorState extends ConsumerState<_AddressEditor> {
                   child: TextField(
                     controller: _lat,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'خط العرض'),
+                    decoration: InputDecoration(labelText: tr('خط العرض')),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -225,27 +226,27 @@ class _AddressEditorState extends ConsumerState<_AddressEditor> {
                   child: TextField(
                     controller: _lng,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'خط الطول'),
+                    decoration: InputDecoration(labelText: tr('خط الطول')),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 4),
             Text(
-              'ℹ️ اختيار الموقع من الخريطة يتطلب تفعيل Google Maps (مرحلة لاحقة).',
+              tr('ℹ️ اختيار الموقع من الخريطة يتطلب تفعيل Google Maps (مرحلة لاحقة).'),
               style: TextStyle(fontSize: 11, color: AppColors.textMuted),
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               activeThumbColor: AppColors.brand,
-              title: const Text('تعيين كعنوان افتراضي'),
+              title: Text(tr('تعيين كعنوان افتراضي')),
               value: _default,
               onChanged: (v) => setState(() => _default = v),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: _saving ? null : _save,
-              child: Text(_saving ? 'جارِ الحفظ…' : 'حفظ العنوان'),
+              child: Text(_saving ? tr('جارِ الحفظ…') : tr('حفظ العنوان')),
             ),
           ],
         ),

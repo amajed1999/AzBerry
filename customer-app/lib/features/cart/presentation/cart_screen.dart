@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -66,11 +67,11 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       final go = await showDialog<bool>(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text('تسجيل الدخول مطلوب'),
-          content: const Text('لإتمام الطلب يجب تسجيل الدخول أولاً.'),
+          title: Text(tr('تسجيل الدخول مطلوب')),
+          content: Text(tr('لإتمام الطلب يجب تسجيل الدخول أولاً.')),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('لاحقاً')),
-            ElevatedButton(onPressed: () => Navigator.pop(context, true), child: const Text('تسجيل الدخول')),
+            TextButton(onPressed: () => Navigator.pop(context, false), child: Text(tr('لاحقاً'))),
+            ElevatedButton(onPressed: () => Navigator.pop(context, true), child: Text(tr('تسجيل الدخول'))),
           ],
         ),
       );
@@ -85,7 +86,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     // Delivery orders require a saved address.
     if (_orderType == 'delivery' && _selectedAddressId == null) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('اختر عنوان التوصيل أولاً')));
+          .showSnackBar(SnackBar(content: Text(tr('اختر عنوان التوصيل أولاً'))));
       return;
     }
 
@@ -139,7 +140,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('السلة')),
+      appBar: AppBar(title: Text(tr('السلة'))),
       body: items.isEmpty
           ? Center(
               child: Column(
@@ -147,7 +148,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 children: [
                   const Text('🛒', style: TextStyle(fontSize: 60)),
                   const SizedBox(height: 8),
-                  Text('سلتك فارغة', style: TextStyle(color: AppColors.textMuted)),
+                  Text(tr('سلتك فارغة'), style: TextStyle(color: AppColors.textMuted)),
                 ],
               ),
             )
@@ -213,11 +214,11 @@ class _CartTile extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.product.nameAr, style: const TextStyle(fontWeight: FontWeight.w700)),
+                Text(item.product.name, style: const TextStyle(fontWeight: FontWeight.w700)),
                 Text(
                   [
-                    if (item.size != null) item.size!.labelAr,
-                    if (item.addons.isNotEmpty) item.addons.map((a) => a.nameAr).join('، '),
+                    if (item.size != null) item.size!.label,
+                    if (item.addons.isNotEmpty) item.addons.map((a) => a.name).join(tr('، ')),
                   ].join('  •  '),
                   style: TextStyle(fontSize: 12, color: AppColors.textMuted),
                 ),
@@ -287,7 +288,7 @@ class _AddressSelector extends StatelessWidget {
             children: [
               const Icon(Icons.add_location_alt, color: AppColors.brand),
               const SizedBox(width: 8),
-              const Expanded(child: Text('أضف عنوان توصيل', style: TextStyle(fontWeight: FontWeight.w600))),
+              Expanded(child: Text(tr('أضف عنوان توصيل'), style: const TextStyle(fontWeight: FontWeight.w600))),
               Icon(Icons.chevron_left, color: AppColors.textMuted),
             ],
           ),
@@ -316,7 +317,7 @@ class _AddressSelector extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(selected.label ?? 'عنوان',
+                  Text(selected.label ?? tr('عنوان'),
                       style: const TextStyle(fontWeight: FontWeight.w700)),
                   if (selected.addressText != null && selected.addressText!.isNotEmpty)
                     Text(selected.addressText!,
@@ -326,7 +327,7 @@ class _AddressSelector extends StatelessWidget {
                 ],
               ),
             ),
-            const Text('تغيير', style: TextStyle(color: AppColors.brandDark, fontWeight: FontWeight.w700)),
+            Text(tr('تغيير'), style: const TextStyle(color: AppColors.brandDark, fontWeight: FontWeight.w700)),
           ],
         ),
       ),
@@ -340,14 +341,14 @@ class _AddressSelector extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text('اختر عنوان التوصيل',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(tr('اختر عنوان التوصيل'),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
             ),
             ...addresses.map((a) => ListTile(
                   leading: const Icon(Icons.location_on, color: AppColors.brand),
-                  title: Text(a.label ?? 'عنوان'),
+                  title: Text(a.label ?? tr('عنوان')),
                   subtitle: a.addressText != null ? Text(a.addressText!) : null,
                   trailing: a.id == selectedId
                       ? const Icon(Icons.check_circle, color: AppColors.brand)
@@ -359,7 +360,7 @@ class _AddressSelector extends StatelessWidget {
                 )),
             ListTile(
               leading: const Icon(Icons.add, color: AppColors.brand),
-              title: const Text('إدارة العناوين'),
+              title: Text(tr('إدارة العناوين')),
               onTap: () {
                 Navigator.pop(context);
                 onManage();
@@ -432,9 +433,9 @@ class _CheckoutPanel extends StatelessWidget {
           // Order type
           Row(
             children: [
-              _Toggle(label: 'توصيل', selected: orderType == 'delivery', onTap: () => onOrderType('delivery')),
+              _Toggle(label: tr('توصيل'), selected: orderType == 'delivery', onTap: () => onOrderType('delivery')),
               const SizedBox(width: 10),
-              _Toggle(label: 'استلام', selected: orderType == 'pickup', onTap: () => onOrderType('pickup')),
+              _Toggle(label: tr('استلام'), selected: orderType == 'pickup', onTap: () => onOrderType('pickup')),
             ],
           ),
           const SizedBox(height: 12),
@@ -452,15 +453,15 @@ class _CheckoutPanel extends StatelessWidget {
           // Payment method
           DropdownButtonFormField<String>(
             initialValue: payment,
-            decoration: const InputDecoration(labelText: 'طريقة الدفع'),
-            items: const [
-              DropdownMenuItem(value: 'cash', child: Text('نقداً عند الاستلام')),
-              DropdownMenuItem(value: 'zaincash', child: Text('ZainCash')),
-              DropdownMenuItem(value: 'asiahawala', child: Text('AsiaHawala')),
-              DropdownMenuItem(value: 'fastpay', child: Text('FastPay')),
-              DropdownMenuItem(value: 'qicard', child: Text('Qi Card')),
-              DropdownMenuItem(value: 'card', child: Text('بطاقة')),
-              DropdownMenuItem(value: 'wallet', child: Text('المحفظة')),
+            decoration: InputDecoration(labelText: tr('طريقة الدفع')),
+            items: [
+              DropdownMenuItem(value: 'cash', child: Text(tr('نقداً عند الاستلام'))),
+              const DropdownMenuItem(value: 'zaincash', child: Text('ZainCash')),
+              const DropdownMenuItem(value: 'asiahawala', child: Text('AsiaHawala')),
+              const DropdownMenuItem(value: 'fastpay', child: Text('FastPay')),
+              const DropdownMenuItem(value: 'qicard', child: Text('Qi Card')),
+              DropdownMenuItem(value: 'card', child: Text(tr('بطاقة'))),
+              DropdownMenuItem(value: 'wallet', child: Text(tr('المحفظة'))),
             ],
             onChanged: (v) => onPayment(v ?? 'cash'),
           ),
@@ -472,7 +473,7 @@ class _CheckoutPanel extends StatelessWidget {
                 child: TextField(
                   controller: promoController,
                   textCapitalization: TextCapitalization.characters,
-                  decoration: const InputDecoration(hintText: 'كود الخصم'),
+                  decoration: InputDecoration(hintText: tr('كود الخصم')),
                 ),
               ),
               const SizedBox(width: 8),
@@ -480,7 +481,7 @@ class _CheckoutPanel extends StatelessWidget {
                 height: 52,
                 child: OutlinedButton(
                   onPressed: checkingPromo ? null : onApplyPromo,
-                  child: Text(checkingPromo ? '…' : 'تطبيق'),
+                  child: Text(checkingPromo ? '…' : tr('تطبيق')),
                 ),
               ),
             ],
@@ -500,11 +501,11 @@ class _CheckoutPanel extends StatelessWidget {
               ),
             ),
           const SizedBox(height: 12),
-          _row('المجموع الفرعي', subtotal),
-          if (discount > 0) _row('الخصم', -discount),
-          if (orderType == 'delivery') _row('رسوم التوصيل', deliveryFee),
+          _row(tr('المجموع الفرعي'), subtotal),
+          if (discount > 0) _row(tr('الخصم'), -discount),
+          if (orderType == 'delivery') _row(tr('رسوم التوصيل'), deliveryFee),
           const Divider(),
-          _row('الإجمالي', total, bold: true),
+          _row(tr('الإجمالي'), total, bold: true),
           const SizedBox(height: 12),
           if (belowMin)
             Padding(
@@ -514,7 +515,7 @@ class _CheckoutPanel extends StatelessWidget {
             ),
           ElevatedButton(
             onPressed: (placing || belowMin) ? null : onCheckout,
-            child: Text(placing ? 'جارِ إرسال الطلب…' : 'تأكيد الطلب'),
+            child: Text(placing ? tr('جارِ إرسال الطلب…') : tr('تأكيد الطلب')),
           ),
         ],
       ),

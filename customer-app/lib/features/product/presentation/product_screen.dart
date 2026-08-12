@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -54,7 +55,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
     );
     ref.read(cartProvider.notifier).add(item);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('أُضيف ${p.nameAr} إلى السلة'), backgroundColor: AppColors.brand),
+      SnackBar(content: Text('أُضيف ${p.name} إلى السلة'), backgroundColor: AppColors.brand),
     );
     context.pop();
   }
@@ -84,7 +85,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(p.nameAr, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800)),
+                  Text(p.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800)),
                   if (p.calories != null)
                     Text('${p.calories} سعرة حرارية',
                         style: TextStyle(color: AppColors.textMuted)),
@@ -95,13 +96,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   const SizedBox(height: 20),
 
                   if (p.sizes.isNotEmpty) ...[
-                    const _SectionTitle('الحجم'),
+                    _SectionTitle(tr('الحجم')),
                     Wrap(
                       spacing: 10,
                       children: p.sizes.map((s) {
                         final sel = _size?.id == s.id;
                         return ChoiceChip(
-                          label: Text('${s.labelAr}'
+                          label: Text('${s.label}'
                               '${s.priceModifier > 0 ? ' +${money(s.priceModifier)}' : ''}'),
                           selected: sel,
                           onSelected: (_) => setState(() => _size = s),
@@ -116,13 +117,13 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   ],
 
                   if (p.addons.isNotEmpty) ...[
-                    const _SectionTitle('الإضافات'),
+                    _SectionTitle(tr('الإضافات')),
                     ...p.addons.map((a) => CheckboxListTile(
                           contentPadding: EdgeInsets.zero,
                           controlAffinity: ListTileControlAffinity.leading,
                           value: _addonIds.contains(a.id),
                           activeColor: AppColors.brand,
-                          title: Text(a.nameAr),
+                          title: Text(a.name),
                           secondary: Text('+${money(a.price)}',
                               style: const TextStyle(color: AppColors.brandDark, fontWeight: FontWeight.w700)),
                           onChanged: (v) => setState(() {
@@ -136,18 +137,18 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                     const SizedBox(height: 12),
                   ],
 
-                  const _SectionTitle('مستوى السكر'),
+                  _SectionTitle(tr('مستوى السكر')),
                   _LevelSlider(value: _sugar, onChanged: (v) => setState(() => _sugar = v)),
                   const SizedBox(height: 8),
-                  const _SectionTitle('مستوى الثلج'),
+                  _SectionTitle(tr('مستوى الثلج')),
                   _LevelSlider(value: _ice, onChanged: (v) => setState(() => _ice = v)),
                   const SizedBox(height: 20),
 
-                  const _SectionTitle('ملاحظات خاصة'),
+                  _SectionTitle(tr('ملاحظات خاصة')),
                   TextField(
                     controller: _notes,
                     maxLines: 2,
-                    decoration: const InputDecoration(hintText: 'مثال: بدون سكر إضافي…'),
+                    decoration: InputDecoration(hintText: tr('مثال: بدون سكر إضافي…')),
                   ),
                   const SizedBox(height: 100),
                 ],

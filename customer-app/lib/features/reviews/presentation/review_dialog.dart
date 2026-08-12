@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
@@ -45,7 +46,7 @@ class _ReviewDialogState extends State<_ReviewDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('قيّم طلبك'),
+      title: Text(tr('قيّم طلبك')),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -67,19 +68,19 @@ class _ReviewDialogState extends State<_ReviewDialog> {
           TextField(
             controller: _comment,
             maxLines: 3,
-            decoration: const InputDecoration(hintText: 'اكتب تعليقاً (اختياري)…'),
+            decoration: InputDecoration(hintText: tr('اكتب تعليقاً (اختياري)…')),
           ),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),
-          child: const Text('لاحقاً'),
+          child: Text(tr('لاحقاً')),
         ),
         ElevatedButton(
           onPressed: _saving ? null : _submit,
           style: ElevatedButton.styleFrom(minimumSize: const Size(88, 40)),
-          child: Text(_saving ? '…' : 'إرسال'),
+          child: Text(_saving ? '…' : tr('إرسال')),
         ),
       ],
     );

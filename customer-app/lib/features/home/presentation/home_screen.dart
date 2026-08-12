@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -75,8 +76,8 @@ class _BranchButton extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('التوصيل من', style: TextStyle(fontSize: 11, color: AppColors.textMuted)),
-              Text(branch?.nameAr ?? 'اختر الفرع',
+              Text(tr('التوصيل من'), style: TextStyle(fontSize: 11, color: AppColors.textMuted)),
+              Text(branch?.name ?? tr('اختر الفرع'),
                   style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
             ],
           ),
@@ -132,9 +133,9 @@ class _MenuBody extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: TextField(
               onChanged: (v) => ref.read(searchQueryProvider.notifier).state = v,
-              decoration: const InputDecoration(
-                hintText: 'ابحث عن مشروب…',
-                prefixIcon: Icon(Icons.search),
+              decoration: InputDecoration(
+                hintText: tr('ابحث عن مشروب…'),
+                prefixIcon: const Icon(Icons.search),
               ),
             ),
           ),
@@ -153,13 +154,13 @@ class _MenuBody extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 children: [
                   _Chip(
-                    label: 'الكل',
+                    label: tr('الكل'),
                     selected: selectedCat == null,
                     onTap: () => ref.read(selectedCategoryProvider.notifier).state = null,
                   ),
                   for (final c in cats)
                     _Chip(
-                      label: c.nameAr,
+                      label: c.name,
                       selected: selectedCat == c.id,
                       onTap: () => ref.read(selectedCategoryProvider.notifier).state = c.id,
                     ),
@@ -183,7 +184,7 @@ class _MenuBody extends ConsumerWidget {
               return SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 80),
-                  child: Center(child: Text('لا توجد منتجات', style: TextStyle(color: AppColors.textMuted))),
+                  child: Center(child: Text(tr('لا توجد منتجات'), style: TextStyle(color: AppColors.textMuted))),
                 ),
               );
             }

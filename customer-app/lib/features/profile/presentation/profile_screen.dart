@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,10 +28,17 @@ class ProfileScreen extends ConsumerWidget {
             MediaQuery.platformBrightnessOf(context) == Brightness.dark);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('حسابي'),
+        title: Text(tr('حسابي')),
         actions: [
+          TextButton(
+            onPressed: () => ref.read(localeProvider.notifier).toggle(),
+            child: Text(
+              ref.watch(localeProvider) == 'ar' ? 'EN' : 'ع',
+              style: const TextStyle(fontWeight: FontWeight.w800),
+            ),
+          ),
           IconButton(
-            tooltip: isDark ? 'الوضع النهاري' : 'الوضع الليلي',
+            tooltip: isDark ? tr('الوضع النهاري') : tr('الوضع الليلي'),
             icon: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
             onPressed: () =>
                 ref.read(themeModeProvider.notifier).toggleDark(!isDark),
@@ -55,13 +63,13 @@ class _GuestView extends StatelessWidget {
           children: [
             const Text('👤', style: TextStyle(fontSize: 60)),
             const SizedBox(height: 12),
-            const Text('أنت تتصفّح كضيف',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+            Text(tr('أنت تتصفّح كضيف'),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
             const SizedBox(height: 6),
-            Text('سجّل الدخول لحفظ طلباتك ونقاط الولاء',
+            Text(tr('سجّل الدخول لحفظ طلباتك ونقاط الولاء'),
                 textAlign: TextAlign.center, style: TextStyle(color: AppColors.textMuted)),
             const SizedBox(height: 20),
-            ElevatedButton(onPressed: onLogin, child: const Text('تسجيل الدخول')),
+            ElevatedButton(onPressed: onLogin, child: Text(tr('تسجيل الدخول'))),
           ],
         ),
       ),
@@ -77,14 +85,14 @@ class _AccountView extends ConsumerWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('تعديل الاسم'),
+        title: Text(tr('تعديل الاسم')),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(hintText: 'اسمك'),
+          decoration: InputDecoration(hintText: tr('اسمك')),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('إلغاء')),
-          ElevatedButton(onPressed: () => Navigator.pop(context, true), child: const Text('حفظ')),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(tr('إلغاء'))),
+          ElevatedButton(onPressed: () => Navigator.pop(context, true), child: Text(tr('حفظ'))),
         ],
       ),
     );
@@ -101,7 +109,7 @@ class _AccountView extends ConsumerWidget {
     final ordersAsync = ref.watch(myOrdersProvider);
 
     final profile = profileAsync.asData?.value;
-    final name = (profile?['name'] as String?) ?? user?.phone ?? user?.email ?? 'مستخدم';
+    final name = (profile?['name'] as String?) ?? user?.phone ?? user?.email ?? tr('مستخدم');
     final points = (profile?['points_balance'] as num?) ?? 0;
     final wallet = (profile?['wallet_balance'] as num?) ?? 0;
 
@@ -142,9 +150,9 @@ class _AccountView extends ConsumerWidget {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Expanded(child: _StatChip(icon: Icons.stars, label: 'نقاط الولاء', value: '$points')),
+                  Expanded(child: _StatChip(icon: Icons.stars, label: tr('نقاط الولاء'), value: '$points')),
                   const SizedBox(width: 10),
-                  Expanded(child: _StatChip(icon: Icons.account_balance_wallet, label: 'المحفظة', value: money(wallet))),
+                  Expanded(child: _StatChip(icon: Icons.account_balance_wallet, label: tr('المحفظة'), value: money(wallet))),
                 ],
               ),
             ],
@@ -153,12 +161,12 @@ class _AccountView extends ConsumerWidget {
         const SizedBox(height: 16),
 
         // Menu
-        _MenuTile(icon: Icons.location_on_outlined, label: 'عناويني', onTap: () => context.push('/addresses')),
-        _MenuTile(icon: Icons.favorite_border, label: 'المفضلة', onTap: () => context.push('/favorites')),
+        _MenuTile(icon: Icons.location_on_outlined, label: tr('عناويني'), onTap: () => context.push('/addresses')),
+        _MenuTile(icon: Icons.favorite_border, label: tr('المفضلة'), onTap: () => context.push('/favorites')),
         const SizedBox(height: 16),
 
         // Orders
-        const Text('سجل الطلبات', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+        Text(tr('سجل الطلبات'), style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
         const SizedBox(height: 8),
         ordersAsync.when(
           loading: () => const Center(
@@ -168,7 +176,7 @@ class _AccountView extends ConsumerWidget {
           data: (orders) => orders.isEmpty
               ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
-                  child: Center(child: Text('لا توجد طلبات بعد', style: TextStyle(color: AppColors.textMuted))),
+                  child: Center(child: Text(tr('لا توجد طلبات بعد'), style: TextStyle(color: AppColors.textMuted))),
                 )
               : Column(
                   children: orders.map((o) => _OrderTile(order: o)).toList(),
@@ -181,7 +189,7 @@ class _AccountView extends ConsumerWidget {
             if (context.mounted) context.go('/');
           },
           icon: const Icon(Icons.logout, color: AppColors.danger),
-          label: const Text('تسجيل الخروج', style: TextStyle(color: AppColors.danger)),
+          label: Text(tr('تسجيل الخروج'), style: const TextStyle(color: AppColors.danger)),
         ),
       ],
     );
@@ -244,7 +252,7 @@ class _OrderTile extends ConsumerWidget {
     return Card(
       child: ListTile(
         onTap: () => context.push('/order/${order.id}'),
-        title: Text('طلب #${order.id.substring(0, 8)}'),
+        title: Text('${tr('طلب')} #${order.id.substring(0, 8)}'),
         subtitle: Text('${order.status.labelAr}  •  ${timeAgo(order.createdAt)}'),
         trailing: delivered
             ? TextButton.icon(
@@ -252,12 +260,12 @@ class _OrderTile extends ConsumerWidget {
                   final done = await showReviewDialog(context, ref, order.id);
                   if (done == true && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('شكراً لتقييمك!'), backgroundColor: AppColors.brand),
+                      SnackBar(content: Text(tr('شكراً لتقييمك!')), backgroundColor: AppColors.brand),
                     );
                   }
                 },
                 icon: const Icon(Icons.star, size: 18, color: AppColors.amber),
-                label: const Text('قيّم'),
+                label: Text(tr('قيّم')),
               )
             : Text(money(order.total),
                 style: const TextStyle(fontWeight: FontWeight.w800, color: AppColors.brandDark)),

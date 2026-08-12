@@ -1,9 +1,13 @@
+import 'package:azberry_customer/core/i18n.dart';
+
 class Category {
   final String id;
   final String nameAr;
   final String nameEn;
   final String? imageUrl;
   final int sortOrder;
+
+  String get name => AppLocale.isEn ? nameEn : nameAr;
 
   Category({
     required this.id,

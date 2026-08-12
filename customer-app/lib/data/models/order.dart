@@ -1,3 +1,5 @@
+import 'package:azberry_customer/core/i18n.dart';
+
 enum OrderStatus { pending, confirmed, preparing, ready, onTheWay, delivered, cancelled }
 
 OrderStatus orderStatusFromString(String s) => switch (s) {
@@ -13,13 +15,13 @@ OrderStatus orderStatusFromString(String s) => switch (s) {
 
 extension OrderStatusX on OrderStatus {
   String get labelAr => switch (this) {
-        OrderStatus.pending => 'قيد الانتظار',
-        OrderStatus.confirmed => 'مؤكّد',
-        OrderStatus.preparing => 'قيد التحضير',
-        OrderStatus.ready => 'جاهز',
-        OrderStatus.onTheWay => 'السائق بالطريق',
-        OrderStatus.delivered => 'تم التسليم',
-        OrderStatus.cancelled => 'ملغى',
+        OrderStatus.pending => tr('قيد الانتظار'),
+        OrderStatus.confirmed => tr('مؤكّد'),
+        OrderStatus.preparing => tr('قيد التحضير'),
+        OrderStatus.ready => tr('جاهز'),
+        OrderStatus.onTheWay => tr('السائق بالطريق'),
+        OrderStatus.delivered => tr('تم التسليم'),
+        OrderStatus.cancelled => tr('ملغى'),
       };
 }
 

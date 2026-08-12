@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -42,7 +43,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } on AuthException catch (e) {
       setState(() => _error = e.message);
     } catch (e) {
-      setState(() => _error = 'تعذّر إرسال الرمز. تأكّد من إعداد مزوّد الرسائل.');
+      setState(() => _error = tr('تعذّر إرسال الرمز. تأكّد من إعداد مزوّد الرسائل.'));
     } finally {
       setState(() => _loading = false);
     }
@@ -115,7 +116,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
               ),
               Text(
-                'طازج… ويوصل لباب بيتك',
+                tr('طازج… ويوصل لباب بيتك'),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppColors.textMuted),
               ),
@@ -125,8 +126,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   controller: _email,
                   keyboardType: TextInputType.emailAddress,
                   textDirection: TextDirection.ltr,
-                  decoration: const InputDecoration(
-                    labelText: 'البريد الإلكتروني',
+                  decoration: InputDecoration(
+                    labelText: tr('البريد الإلكتروني'),
                     hintText: 'cust1@test.com',
                   ),
                 ),
@@ -135,20 +136,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   controller: _password,
                   obscureText: true,
                   textDirection: TextDirection.ltr,
-                  decoration: const InputDecoration(labelText: 'كلمة المرور'),
+                  decoration: InputDecoration(labelText: tr('كلمة المرور')),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _loading ? null : _emailLogin,
-                  child: Text(_loading ? 'جارِ الدخول…' : 'تسجيل الدخول'),
+                  child: Text(_loading ? tr('جارِ الدخول…') : tr('تسجيل الدخول')),
                 ),
               ] else if (!_codeSent) ...[
                 TextField(
                   controller: _phone,
                   keyboardType: TextInputType.phone,
                   textDirection: TextDirection.ltr,
-                  decoration: const InputDecoration(
-                    labelText: 'رقم الهاتف',
+                  decoration: InputDecoration(
+                    labelText: tr('رقم الهاتف'),
                     prefixText: '$_dialCode ',
                     hintText: '7XX XXX XXXX',
                   ),
@@ -156,26 +157,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _loading ? null : _sendOtp,
-                  child: Text(_loading ? 'جارِ الإرسال…' : 'إرسال رمز التحقق'),
+                  child: Text(_loading ? tr('جارِ الإرسال…') : tr('إرسال رمز التحقق')),
                 ),
               ] else ...[
                 TextField(
                   controller: _otp,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
-                    labelText: 'رمز التحقق',
+                  decoration: InputDecoration(
+                    labelText: tr('رمز التحقق'),
                     hintText: '● ● ● ● ● ●',
                   ),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _loading ? null : _verify,
-                  child: Text(_loading ? 'جارِ التحقق…' : 'تأكيد'),
+                  child: Text(_loading ? tr('جارِ التحقق…') : tr('تأكيد')),
                 ),
                 TextButton(
                   onPressed: () => setState(() => _codeSent = false),
-                  child: const Text('تغيير الرقم'),
+                  child: Text(tr('تغيير الرقم')),
                 ),
               ],
               if (_error != null)
@@ -194,11 +195,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   _codeSent = false;
                   _error = null;
                 }),
-                child: Text(_emailMode ? 'الدخول برقم الهاتف' : 'دخول تجريبي بالبريد الإلكتروني'),
+                child: Text(_emailMode ? tr('الدخول برقم الهاتف') : tr('دخول تجريبي بالبريد الإلكتروني')),
               ),
               TextButton(
                 onPressed: () => context.go('/'),
-                child: const Text('تصفّح كضيف'),
+                child: Text(tr('تصفّح كضيف')),
               ),
             ],
           ),
