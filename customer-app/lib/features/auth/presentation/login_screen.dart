@@ -97,24 +97,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               const Spacer(),
               Center(
-                child: Container(
-                  width: 84,
-                  height: 84,
-                  decoration: BoxDecoration(
-                    color: AppColors.brand,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: const Center(
-                    child: Text('🫐', style: TextStyle(fontSize: 44)),
-                  ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset('assets/logo.jpg', width: 200),
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'AzBerry',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
-              ),
               Text(
                 tr('طازج… ويوصل لباب بيتك'),
                 textAlign: TextAlign.center,

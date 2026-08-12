@@ -36,13 +36,15 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/logo.jpg
 
 # App launcher icons — run: dart run flutter_launcher_icons
 flutter_launcher_icons:
   android: true
   ios: false # no ios/ folder yet; generate on a Mac after `flutter create . --platforms ios`
   image_path: "assets/icon/ic_source.png"
-  adaptive_icon_background: "#16A34A"
+  adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/icon/ic_foreground.png"
   web:
     generated: true

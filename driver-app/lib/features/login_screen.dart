@@ -61,20 +61,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             children: [
               const Spacer(),
               Center(
-                child: Container(
-                  width: 84,
-                  height: 84,
-                  decoration: BoxDecoration(
-                    color: AppColors.brand,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: const Center(child: Icon(Icons.delivery_dining, color: Colors.white, size: 46)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset('assets/logo.jpg', width: 180),
                 ),
               ),
-              const SizedBox(height: 16),
-              const Text('AzBerry سائق',
+              const SizedBox(height: 12),
+              const Text('تطبيق السائق',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
               const Text('سجّل الدخول لبدء استلام الطلبات',
                   textAlign: TextAlign.center, style: TextStyle(color: AppColors.textMuted)),
               const SizedBox(height: 28),
