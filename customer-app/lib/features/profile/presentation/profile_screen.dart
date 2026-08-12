@@ -163,6 +163,8 @@ class _AccountView extends ConsumerWidget {
         // Menu
         _MenuTile(icon: Icons.location_on_outlined, label: tr('عناويني'), onTap: () => context.push('/addresses')),
         _MenuTile(icon: Icons.favorite_border, label: tr('المفضلة'), onTap: () => context.push('/favorites')),
+        _MenuTile(icon: Icons.account_balance_wallet_outlined, label: tr('المحفظة'), onTap: () => context.push('/wallet')),
+        _MenuTile(icon: Icons.card_giftcard, label: tr('ادعُ صديقاً'), onTap: () => context.push('/referral')),
         const SizedBox(height: 16),
 
         // Orders

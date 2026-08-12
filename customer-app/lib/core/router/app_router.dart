@@ -8,6 +8,8 @@ import '../../features/tracking/presentation/order_tracking_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/addresses/presentation/addresses_screen.dart';
 import '../../features/favorites/presentation/favorites_screen.dart';
+import '../../features/wallet/presentation/wallet_screen.dart';
+import '../../features/referral/presentation/referral_screen.dart';
 import '../../data/models/product.dart';
 
 final appRouter = GoRouter(
@@ -28,5 +30,7 @@ final appRouter = GoRouter(
     GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
     GoRoute(path: '/addresses', builder: (_, __) => const AddressesScreen()),
     GoRoute(path: '/favorites', builder: (_, __) => const FavoritesScreen()),
+    GoRoute(path: '/wallet', builder: (_, __) => const WalletScreen()),
+    GoRoute(path: '/referral', builder: (_, __) => const ReferralScreen()),
   ],
 );

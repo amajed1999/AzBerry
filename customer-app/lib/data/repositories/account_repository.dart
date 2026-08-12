@@ -9,6 +9,35 @@ class AccountRepository {
 
   String? get _uid => _db.auth.currentUser?.id;
 
+  // ---- Referral -----------------------------------------------------------
+  /// Applies a friend's referral code via the secure Edge Function.
+  /// Returns the points reward on success; throws with an Arabic message on error.
+  Future<int> applyReferral(String code) async {
+    try {
+      final res = await _db.functions.invoke('apply-referral', body: {'code': code.trim()});
+      final d = res.data;
+      if (d is Map && d['reward'] != null) return (d['reward'] as num).toInt();
+      throw Exception((d is Map ? d['error'] : null)?.toString() ?? 'تعذّر تطبيق الكود');
+    } on FunctionException catch (e) {
+      final det = e.details;
+      throw Exception(
+          (det is Map && det['error'] != null) ? det['error'].toString() : 'تعذّر تطبيق الكود');
+    }
+  }
+
+  /// Loyalty points activity log.
+  Future<List<Map<String, dynamic>>> pointTransactions() async {
+    final uid = _uid;
+    if (uid == null) return [];
+    final rows = await _db
+        .from('point_transactions')
+        .select()
+        .eq('user_id', uid)
+        .order('created_at', ascending: false)
+        .limit(50);
+    return (rows as List).cast<Map<String, dynamic>>();
+  }
+
   // ---- Profile -------------------------------------------------------------
   Future<void> updateProfile({String? name, String? language}) async {
     final uid = _uid;
