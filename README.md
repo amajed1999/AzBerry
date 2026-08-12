@@ -1,5 +1,24 @@
 # 🫐 AzBerry — منصّة توصيل العصائر والمشروبات
 
+<p align="center">
+  <img alt="Flutter" src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white" />
+  <img alt="Dart" src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white" />
+  <img alt="React" src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white" />
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white" />
+  <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white" />
+  <img alt="Riverpod" src="https://img.shields.io/badge/Riverpod-2-4B32C3" />
+  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-Postgres%20%2B%20RLS-3FCF8E?logo=supabase&logoColor=white" />
+  <img alt="Deno" src="https://img.shields.io/badge/Edge_Functions-Deno-000000?logo=deno&logoColor=white" />
+  <img alt="Vercel" src="https://img.shields.io/badge/Deploy-Vercel-000000?logo=vercel&logoColor=white" />
+</p>
+
+<p align="center">
+  <img alt="Platforms" src="https://img.shields.io/badge/platforms-Android%20%C2%B7%20iOS%20%C2%B7%20Web-16A34A" />
+  <img alt="RTL" src="https://img.shields.io/badge/RTL-عربي-16A34A" />
+  <img alt="Status" src="https://img.shields.io/badge/status-active-success" />
+</p>
+
 منصّة توصيل متكاملة لسلسلة محلات عصائر طبيعية، سلاش، سلطات فواكه، مكسات بروتين، ومشروبات طاقة —
 تمكّن الزبون من الطلب من أقرب فرع والدفع وتتبّع الطلب لحظياً حتى الاستلام، مع تحكّم كامل عبر لوحة إدارة مركزية.
 
