@@ -26,6 +26,21 @@
 
 ---
 
+## 📖 المحتويات
+
+- [📦 المكوّنات](#components)
+- [🏗️ المعمارية](#architecture)
+- [✨ المزايا](#features)
+- [🗄️ قاعدة البيانات](#database)
+- [🚀 التشغيل محلياً](#run)
+- [☁️ النشر](#deploy)
+- [🔑 حسابات الاختبار](#accounts)
+- [🧩 متطلبات إضافية](#native)
+
+---
+
+<a id="components"></a>
+
 ## 📦 مكوّنات المنصّة
 
 | المجلد | الوصف | التقنية | الحالة |
@@ -36,6 +51,8 @@
 | [`supabase/`](supabase) | مخطط قاعدة البيانات + الدوال | Postgres + RLS + Edge Functions (Deno) | ✅ منشور |
 
 ---
+
+<a id="architecture"></a>
 
 ## 🏗️ المعمارية
 
@@ -63,6 +80,8 @@
 
 ---
 
+<a id="features"></a>
+
 ## ✨ أبرز المزايا
 
 ### تطبيق الزبون
@@ -81,6 +100,8 @@
 
 ---
 
+<a id="database"></a>
+
 ## 🗄️ قاعدة البيانات
 
 20+ جدولاً مع علاقات وفهارس وسياسات RLS، أبرزها:
@@ -97,6 +118,8 @@ order_status_history · drivers · promo_codes · reviews · banners · inventor
 التفاصيل في [`supabase/functions/README.md`](supabase/functions/README.md).
 
 ---
+
+<a id="run"></a>
 
 ## 🚀 التشغيل محلياً
 
@@ -119,6 +142,8 @@ flutter run            # جهاز/محاكي، أو: flutter run -d chrome
 
 ---
 
+<a id="deploy"></a>
+
 ## ☁️ النشر
 
 كل التفاصيل في [`DEPLOYMENT.md`](DEPLOYMENT.md):
@@ -126,6 +151,8 @@ flutter run            # جهاز/محاكي، أو: flutter run -d chrome
 - **تطبيقا Flutter** → Google Play / App Store (توقيع أندرويد مُعدّ)، أو الويب.
 
 ---
+
+<a id="accounts"></a>
 
 ## 🔑 حسابات الاختبار
 
@@ -136,6 +163,8 @@ flutter run            # جهاز/محاكي، أو: flutter run -d chrome
 | سائق | `driver1@test.com` / `Test#1234` |
 
 ---
+
+<a id="native"></a>
 
 ## 🧩 متطلبات إعداد أصلية (خارج البرمجة)
 
