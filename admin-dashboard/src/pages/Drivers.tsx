@@ -3,6 +3,8 @@ import { Plus, Pencil, Star, Circle } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { PageHeader } from '@/components/Layout'
 import { Button, Badge, Input, Select, Modal, Card } from '@/components/ui/primitives'
+import { useAuth } from '@/context/AuthContext'
+import { isSuperAdmin } from '@/lib/access'
 import type { Tables } from '@/lib/database.types'
 
 type DriverRow = Tables<'drivers'> & {
@@ -12,6 +14,8 @@ type DriverRow = Tables<'drivers'> & {
 type Branch = Pick<Tables<'branches'>, 'id' | 'name_ar'>
 
 export default function Drivers() {
+  const { profile } = useAuth()
+  const canPromote = isSuperAdmin(profile?.role) // promoting a user = role change
   const [rows, setRows] = React.useState<DriverRow[]>([])
   const [branches, setBranches] = React.useState<Branch[]>([])
   const [open, setOpen] = React.useState(false)
@@ -117,9 +121,11 @@ export default function Drivers() {
         title="إدارة السائقين"
         subtitle={`${rows.length} سائق`}
         action={
-          <Button onClick={openNew}>
-            <Plus className="h-4 w-4" /> إضافة سائق
-          </Button>
+          canPromote ? (
+            <Button onClick={openNew}>
+              <Plus className="h-4 w-4" /> إضافة سائق
+            </Button>
+          ) : null
         }
       />
       <div className="p-6">

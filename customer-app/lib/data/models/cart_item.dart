@@ -6,8 +6,6 @@ class CartItem {
   final ProductSize? size;
   final List<ProductAddon> addons;
   final int quantity;
-  final int sugarLevel; // 0..100
-  final int iceLevel; // 0..100
   final String? notes;
 
   CartItem({
@@ -16,8 +14,6 @@ class CartItem {
     this.size,
     this.addons = const [],
     this.quantity = 1,
-    this.sugarLevel = 100,
-    this.iceLevel = 100,
     this.notes,
   });
 
@@ -36,8 +32,6 @@ class CartItem {
         size: size,
         addons: addons,
         quantity: quantity ?? this.quantity,
-        sugarLevel: sugarLevel,
-        iceLevel: iceLevel,
         notes: notes,
       );
 

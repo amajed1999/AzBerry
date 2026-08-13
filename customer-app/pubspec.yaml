@@ -48,5 +48,5 @@ flutter_launcher_icons:
   adaptive_icon_foreground: "assets/icon/ic_foreground.png"
   web:
     generated: true
-    background_color: "#16A34A"
-    theme_color: "#16A34A"
+    background_color: "#E4531C"
+    theme_color: "#E4531C"

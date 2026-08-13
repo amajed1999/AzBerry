@@ -27,11 +27,12 @@ export default function Login() {
     <div className="flex h-full items-center justify-center bg-gradient-to-br from-brand-50 to-slate-100 p-4">
       <div className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-8 shadow-lg">
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-600 text-3xl">
-            🫐
-          </div>
-          <h1 className="text-2xl font-extrabold text-slate-800">AzBerry</h1>
-          <p className="text-sm text-slate-400">لوحة تحكم الإدارة</p>
+          <img
+            src="/logo.jpg"
+            alt="AzBerry"
+            className="mx-auto mb-3 h-16 w-auto max-w-[180px] object-contain"
+          />
+          <p className="text-sm text-slate-500">لوحة تحكم الإدارة</p>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">

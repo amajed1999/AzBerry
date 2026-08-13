@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:azberry_customer/core/i18n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -177,14 +178,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               const Spacer(),
-              TextButton(
-                onPressed: () => setState(() {
-                  _emailMode = !_emailMode;
-                  _codeSent = false;
-                  _error = null;
-                }),
-                child: Text(_emailMode ? tr('الدخول برقم الهاتف') : tr('دخول تجريبي بالبريد الإلكتروني')),
-              ),
+              // Test-only email/password sign-in. Hidden in release builds so it
+              // is not available to end users in production.
+              if (!kReleaseMode)
+                TextButton(
+                  onPressed: () => setState(() {
+                    _emailMode = !_emailMode;
+                    _codeSent = false;
+                    _error = null;
+                  }),
+                  child: Text(_emailMode ? tr('الدخول برقم الهاتف') : tr('دخول تجريبي بالبريد الإلكتروني')),
+                ),
               TextButton(
                 onPressed: () => context.go('/'),
                 child: Text(tr('تصفّح كضيف')),

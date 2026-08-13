@@ -10,12 +10,6 @@ import '../../../providers/providers.dart';
 import '../../../providers/settings_provider.dart';
 import '../../reviews/presentation/review_dialog.dart';
 
-final myOrdersProvider = FutureProvider<List<AppOrder>>((ref) async {
-  final user = ref.watch(currentUserProvider);
-  if (user == null) return [];
-  return ref.watch(ordersRepoProvider).myOrders(user.id);
-});
-
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
@@ -162,7 +156,6 @@ class _AccountView extends ConsumerWidget {
 
         // Menu
         _MenuTile(icon: Icons.location_on_outlined, label: tr('عناويني'), onTap: () => context.push('/addresses')),
-        _MenuTile(icon: Icons.favorite_border, label: tr('المفضلة'), onTap: () => context.push('/favorites')),
         _MenuTile(icon: Icons.account_balance_wallet_outlined, label: tr('المحفظة'), onTap: () => context.push('/wallet')),
         _MenuTile(icon: Icons.card_giftcard, label: tr('ادعُ صديقاً'), onTap: () => context.push('/referral')),
         const SizedBox(height: 16),

@@ -41,10 +41,6 @@ class HomeScreen extends ConsumerWidget {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () => context.push('/profile'),
-            icon: const Icon(Icons.person_outline),
-          ),
           _CartButton(count: cartCount, onTap: () => context.push('/cart')),
           const SizedBox(width: 8),
         ],

@@ -23,6 +23,26 @@ const _timeline = [
   OrderStatus.delivered,
 ];
 
+/// Canonical status → color, matching the admin dashboard board colors.
+Color statusColor(OrderStatus s) {
+  switch (s) {
+    case OrderStatus.pending:
+      return AppColors.statusPending;
+    case OrderStatus.confirmed:
+      return AppColors.statusConfirmed;
+    case OrderStatus.preparing:
+      return AppColors.statusPreparing;
+    case OrderStatus.ready:
+      return AppColors.statusReady;
+    case OrderStatus.onTheWay:
+      return AppColors.statusOnWay;
+    case OrderStatus.delivered:
+      return AppColors.statusDelivered;
+    case OrderStatus.cancelled:
+      return AppColors.statusCancelled;
+  }
+}
+
 class OrderTrackingScreen extends ConsumerWidget {
   final String orderId;
   const OrderTrackingScreen({super.key, required this.orderId});
@@ -79,6 +99,7 @@ class OrderTrackingScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
+                    _StatusPill(order.status),
                   ],
                 ),
               ),
@@ -92,6 +113,7 @@ class OrderTrackingScreen extends ConsumerWidget {
                   done: done,
                   isCurrent: isCurrent,
                   isLast: i == _timeline.length - 1,
+                  accent: statusColor(status),
                 );
               }),
             ],
@@ -102,21 +124,48 @@ class OrderTrackingScreen extends ConsumerWidget {
   }
 }
 
+class _StatusPill extends StatelessWidget {
+  final OrderStatus status;
+  const _StatusPill(this.status);
+
+  @override
+  Widget build(BuildContext context) {
+    final c = statusColor(status);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: c.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: c.withValues(alpha: 0.35)),
+      ),
+      child: Text(
+        status.labelAr,
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: c),
+      ),
+    );
+  }
+}
+
 class _TimelineStep extends StatelessWidget {
   final String label;
   final bool done;
   final bool isCurrent;
   final bool isLast;
+  final Color accent;
   const _TimelineStep({
     required this.label,
     required this.done,
     required this.isCurrent,
     required this.isLast,
+    required this.accent,
   });
 
   @override
   Widget build(BuildContext context) {
-    final color = done ? AppColors.brand : AppColors.border;
+    // Current step uses its status color; completed steps use brand; future grey.
+    final dotColor =
+        isCurrent ? accent : (done ? AppColors.brand : AppColors.border);
+    final lineColor = done ? AppColors.brand : AppColors.border;
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +175,8 @@ class _TimelineStep extends StatelessWidget {
               Container(
                 width: 28,
                 height: 28,
-                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                decoration:
+                    BoxDecoration(color: dotColor, shape: BoxShape.circle),
                 child: Icon(
                   done ? Icons.check : Icons.circle,
                   size: 16,
@@ -135,7 +185,7 @@ class _TimelineStep extends StatelessWidget {
               ),
               if (!isLast)
                 Expanded(
-                  child: Container(width: 2, color: color),
+                  child: Container(width: 2, color: lineColor),
                 ),
             ],
           ),

@@ -6,6 +6,7 @@ import '../data/models/category.dart';
 import '../data/models/product.dart';
 import '../data/models/address.dart';
 import '../data/models/banner.dart';
+import '../data/models/order.dart';
 import '../data/repositories/catalog_repository.dart';
 import '../data/repositories/orders_repository.dart';
 import '../data/repositories/account_repository.dart';
@@ -68,6 +69,14 @@ final myProfileProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
   final uid = db.auth.currentUser?.id;
   if (uid == null) return null;
   return db.from('users').select().eq('id', uid).maybeSingle();
+});
+
+/// The signed-in user's orders (newest first). Empty for guests.
+final myOrdersProvider = FutureProvider<List<AppOrder>>((ref) async {
+  ref.watch(authStateProvider);
+  final user = ref.watch(currentUserProvider);
+  if (user == null) return [];
+  return ref.watch(ordersRepoProvider).myOrders(user.id);
 });
 
 /// The signed-in user's saved addresses.

@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard,
   ClipboardList,
@@ -14,6 +14,7 @@ import {
   BarChart3,
 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
+import { canAccessRoute } from '@/lib/access'
 import { cn } from '@/lib/utils'
 
 const NAV = [
@@ -40,23 +41,28 @@ const ROLE_LABEL: Record<string, string> = {
 export default function Layout() {
   const { profile, signOut } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  // Only show sidebar items this role may open.
+  const visibleNav = NAV.filter((item) => canAccessRoute(profile?.role, item.to))
+  // Guard the routed content too (covers typed URLs / stale links).
+  const canView = canAccessRoute(profile?.role, location.pathname)
 
   return (
     <div className="flex h-full">
       {/* Sidebar */}
       <aside className="flex w-64 shrink-0 flex-col border-l border-slate-200 bg-white">
-        <div className="flex items-center gap-2 border-b border-slate-100 p-5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-lg font-extrabold text-white">
-            🫐
-          </div>
-          <div>
-            <div className="text-lg font-extrabold leading-none text-slate-800">AzBerry</div>
-            <div className="text-xs text-slate-400">لوحة التحكم</div>
-          </div>
+        <div className="border-b border-slate-100 p-5">
+          <img
+            src="/logo.jpg"
+            alt="AzBerry"
+            className="h-9 w-auto max-w-[150px] object-contain"
+          />
+          <div className="mt-1.5 text-xs text-slate-400">لوحة التحكم</div>
         </div>
 
         <nav className="flex-1 space-y-1 p-3">
-          {NAV.map((item) => (
+          {visibleNav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -105,8 +111,20 @@ export default function Layout() {
 
       {/* Main */}
       <main className="flex-1 overflow-auto">
-        <Outlet />
+        {canView ? <Outlet /> : <NoAccess />}
       </main>
+    </div>
+  )
+}
+
+function NoAccess() {
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+      <div className="text-5xl">🔒</div>
+      <h2 className="text-xl font-bold text-slate-800">لا تملك صلاحية هذا القسم</h2>
+      <p className="max-w-md text-sm text-slate-500">
+        هذا القسم غير متاح لدورك الحالي. تواصل مع المدير العام إن كنت تحتاج الوصول.
+      </p>
     </div>
   )
 }

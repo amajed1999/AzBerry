@@ -4,11 +4,15 @@ import { supabase } from '@/lib/supabase'
 import { PageHeader } from '@/components/Layout'
 import { Button, Badge, Input, Card } from '@/components/ui/primitives'
 import { formatMoney } from '@/lib/utils'
+import { useAuth } from '@/context/AuthContext'
+import { isSuperAdmin } from '@/lib/access'
 import type { Tables } from '@/lib/database.types'
 
 type User = Tables<'users'>
 
 export default function Customers() {
+  const { profile } = useAuth()
+  const canManage = isSuperAdmin(profile?.role)
   const [rows, setRows] = React.useState<User[]>([])
   const [search, setSearch] = React.useState('')
   const [busy, setBusy] = React.useState<string | null>(null)
@@ -113,32 +117,36 @@ export default function Customers() {
                       </Badge>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex gap-1">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          disabled={busy === u.id}
-                          onClick={() => addPoints(u)}
-                        >
-                          <Gift className="h-4 w-4 text-brand-600" /> نقاط
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          disabled={busy === u.id}
-                          onClick={() => toggleBlock(u)}
-                        >
-                          {u.is_blocked ? (
-                            <>
-                              <CheckCircle2 className="h-4 w-4 text-green-600" /> رفع الحظر
-                            </>
-                          ) : (
-                            <>
-                              <Ban className="h-4 w-4 text-red-600" /> حظر
-                            </>
-                          )}
-                        </Button>
-                      </div>
+                      {canManage ? (
+                        <div className="flex gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            disabled={busy === u.id}
+                            onClick={() => addPoints(u)}
+                          >
+                            <Gift className="h-4 w-4 text-brand-600" /> نقاط
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            disabled={busy === u.id}
+                            onClick={() => toggleBlock(u)}
+                          >
+                            {u.is_blocked ? (
+                              <>
+                                <CheckCircle2 className="h-4 w-4 text-green-600" /> رفع الحظر
+                              </>
+                            ) : (
+                              <>
+                                <Ban className="h-4 w-4 text-red-600" /> حظر
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-slate-400">عرض فقط</span>
+                      )}
                     </td>
                   </tr>
                 ))}

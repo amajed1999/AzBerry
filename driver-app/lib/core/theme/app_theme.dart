@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
-  static const brand = Color(0xFF0E7490); // teal — distinct from customer app
-  static const brandDark = Color(0xFF155E75);
-  static const brandSurface = Color(0xFFECFEFF);
+  // AzBerry logo orange — unified across all three apps + the dashboard.
+  static const brand = Color(0xFFE4531C);
+  static const brandDark = Color(0xFFBC4116);
+  static const brandSurface = Color(0xFFFFF4ED);
   static const bg = Color(0xFFF8FAFC);
   static const surface = Colors.white;
   static const textDark = Color(0xFF0F172A);

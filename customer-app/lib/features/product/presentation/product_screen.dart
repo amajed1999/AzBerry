@@ -23,8 +23,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   ProductSize? _size;
   final Set<String> _addonIds = {};
   int _qty = 1;
-  double _sugar = 100;
-  double _ice = 100;
   final _notes = TextEditingController();
 
   @override
@@ -49,8 +47,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
       size: _size,
       addons: p.addons.where((a) => _addonIds.contains(a.id)).toList(),
       quantity: _qty,
-      sugarLevel: _sugar.round(),
-      iceLevel: _ice.round(),
       notes: _notes.text.trim().isEmpty ? null : _notes.text.trim(),
     );
     ref.read(cartProvider.notifier).add(item);
@@ -137,13 +133,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                     const SizedBox(height: 12),
                   ],
 
-                  _SectionTitle(tr('مستوى السكر')),
-                  _LevelSlider(value: _sugar, onChanged: (v) => setState(() => _sugar = v)),
-                  const SizedBox(height: 8),
-                  _SectionTitle(tr('مستوى الثلج')),
-                  _LevelSlider(value: _ice, onChanged: (v) => setState(() => _ice = v)),
-                  const SizedBox(height: 20),
-
                   _SectionTitle(tr('ملاحظات خاصة')),
                   TextField(
                     controller: _notes,
@@ -204,31 +193,6 @@ class _SectionTitle extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 8),
         child: Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
       );
-}
-
-class _LevelSlider extends StatelessWidget {
-  final double value;
-  final ValueChanged<double> onChanged;
-  const _LevelSlider({required this.value, required this.onChanged});
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Slider(
-            value: value,
-            min: 0,
-            max: 100,
-            divisions: 4,
-            activeColor: AppColors.brand,
-            label: '${value.round()}%',
-            onChanged: onChanged,
-          ),
-        ),
-        SizedBox(width: 44, child: Text('${value.round()}%', textAlign: TextAlign.center)),
-      ],
-    );
-  }
 }
 
 class _BottomBar extends StatelessWidget {

@@ -19,6 +19,10 @@ export const ORDER_STATUS_LABEL: Record<Enums<'order_status'>, string> = {
   cancelled: 'ملغى',
 }
 
+// Canonical order-status palette — MUST stay in sync with the customer app
+// (customer-app/lib/core/theme/app_colors.dart › statusXxx). Same semantics:
+// pending=amber · confirmed=blue · preparing=indigo · ready=purple ·
+// on_the_way=cyan · delivered=green · cancelled=red.
 export const ORDER_STATUS_COLOR: Record<Enums<'order_status'>, string> = {
   pending: 'bg-amber-100 text-amber-700 border-amber-200',
   confirmed: 'bg-blue-100 text-blue-700 border-blue-200',
